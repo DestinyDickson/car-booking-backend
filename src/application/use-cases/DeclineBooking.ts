@@ -1,7 +1,7 @@
 import { BookingStatus } from "../../domain/entities/Booking";
 import { IBookingRepository } from "../../domain/repositories/IBookingRepository";
 
-export class ApproveBooking {
+export class DeclineBooking {
   constructor(private readonly bookingRepo: IBookingRepository) {}
 
   async execute(bookingId: string): Promise<void> {
@@ -11,14 +11,10 @@ export class ApproveBooking {
       throw new Error("Booking not found");
     }
 
-    if (booking.startTime < new Date()) {
-      throw new Error("Cannot approve past bookings");
-    }
-
     if (booking.status !== BookingStatus.PENDING) {
-      throw new Error("Only pending bookings can be approved");
+      throw new Error("Only pending bookings can be declined");
     }
 
-    await this.bookingRepo.updateStatus(bookingId, BookingStatus.CONFIRMED);
+    await this.bookingRepo.updateStatus(bookingId, BookingStatus.DECLINED);
   }
 }

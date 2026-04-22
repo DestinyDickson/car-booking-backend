@@ -1,10 +1,10 @@
-import { ApproveBooking } from "../src/application/use-cases/ApproveBooking";
+import { DeclineBooking } from "../src/application/use-cases/DeclineBooking";
 import { Booking, BookingStatus } from "../src/domain/entities/Booking";
 import { IBookingRepository } from "../src/domain/repositories/IBookingRepository";
 
-describe("ApproveBooking use case", () => {
+describe("DeclineBooking use case", () => {
   let bookingRepo: jest.Mocked<IBookingRepository>;
-  let approveBooking: ApproveBooking;
+  let declineBooking: DeclineBooking;
 
   beforeEach(() => {
     bookingRepo = {
@@ -16,10 +16,10 @@ describe("ApproveBooking use case", () => {
       updateBooking: jest.fn(),
     };
 
-    approveBooking = new ApproveBooking(bookingRepo);
+    declineBooking = new DeclineBooking(bookingRepo);
   });
 
-  it("should approve a pending booking", async () => {
+  it("should decline a pending booking", async () => {
     const booking = new Booking(
       "b1",
       "user1",
@@ -31,18 +31,18 @@ describe("ApproveBooking use case", () => {
 
     bookingRepo.findById.mockResolvedValue(booking);
 
-    await approveBooking.execute("b1");
+    await declineBooking.execute("b1");
 
     expect(bookingRepo.updateStatus).toHaveBeenCalledWith(
       "b1",
-      BookingStatus.CONFIRMED
+      BookingStatus.DECLINED
     );
   });
 
   it("should throw if booking does not exist", async () => {
     bookingRepo.findById.mockResolvedValue(null);
 
-    await expect(approveBooking.execute("b1")).rejects.toThrow(
+    await expect(declineBooking.execute("b1")).rejects.toThrow(
       "Booking not found"
     );
   });
@@ -59,25 +59,8 @@ describe("ApproveBooking use case", () => {
 
     bookingRepo.findById.mockResolvedValue(booking);
 
-    await expect(approveBooking.execute("b1")).rejects.toThrow(
-      "Only pending bookings can be approved"
-    );
-  });
-
-  it("should throw if booking start time is in the past", async () => {
-    const fakeBooking = {
-      id: "b1",
-      userId: "user1",
-      carId: "car1",
-      startTime: new Date(Date.now() - 60 * 60 * 1000),
-      endTime: new Date(Date.now() + 60 * 60 * 1000),
-      status: BookingStatus.PENDING,
-    };
-
-    bookingRepo.findById.mockResolvedValue(fakeBooking as Booking);
-
-    await expect(approveBooking.execute("b1")).rejects.toThrow(
-      "Cannot approve past bookings"
+    await expect(declineBooking.execute("b1")).rejects.toThrow(
+      "Only pending bookings can be declined"
     );
   });
 });

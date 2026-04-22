@@ -16,6 +16,7 @@ describe("CreateBooking use case", () => {
       findByUserId: jest.fn(),
       findOverlapping: jest.fn(),
       updateStatus: jest.fn(),
+      updateBooking: jest.fn(),
     };
 
     carRepo = {
@@ -55,12 +56,12 @@ describe("CreateBooking use case", () => {
     ).rejects.toThrow("Car not found");
   });
 
-  it("should throw if car is not available", async () => {
+  it("should throw if car is in maintenance", async () => {
     const start = new Date(Date.now() + 60 * 60 * 1000);
     const end = new Date(Date.now() + 2 * 60 * 60 * 1000);
 
     carRepo.findById.mockResolvedValue(
-      new Car("car1", "Toyota", "Corolla", "ABC123", CarStatus.BOOKED)
+      new Car("car1", "Toyota", "Corolla", "ABC123", CarStatus.MAINTENANCE)
     );
 
     await expect(

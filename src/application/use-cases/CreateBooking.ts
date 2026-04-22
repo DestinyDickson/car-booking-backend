@@ -22,7 +22,7 @@ export class CreateBooking {
       throw new Error("Car not found");
     }
 
-    if (car.status !== CarStatus.AVAILABLE) {
+    if (car.status === CarStatus.MAINTENANCE) {
       throw new Error("Car is not available");
     }
 

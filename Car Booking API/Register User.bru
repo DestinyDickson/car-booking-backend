@@ -6,10 +6,20 @@ meta {
 
 post {
   url: http://localhost:3000/api/auth/register
-  body: none
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "name": "Destiny",
+    "email": "didi@g.com",
+    "password": "ABC123"
+  }
+  
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }

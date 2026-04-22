@@ -19,7 +19,7 @@ export class MongoBookingRepository implements IBookingRepository {
     if (!doc) return null;
 
     return new Booking(
-      doc.id,
+      doc._id.toString(),
       doc.userId,
       doc.carId,
       new Date(doc.startTime),
@@ -34,7 +34,7 @@ export class MongoBookingRepository implements IBookingRepository {
     return docs.map(
       (doc) =>
         new Booking(
-          doc.id,
+          doc._id.toString(),
           doc.userId,
           doc.carId,
           new Date(doc.startTime),
@@ -47,19 +47,26 @@ export class MongoBookingRepository implements IBookingRepository {
   async findOverlapping(
     carId: string,
     start: Date,
-    end: Date
+    end: Date,
+    excludeBookingId?: string
   ): Promise<Booking | null> {
-    const doc = await BookingModel.findOne({
+    const query: any = {
       carId,
-      status: { $ne: BookingStatus.CANCELLED },
+      status: { $in: [BookingStatus.PENDING, BookingStatus.CONFIRMED] },
       startTime: { $lt: end },
       endTime: { $gt: start },
-    });
+    };
+
+    if (excludeBookingId) {
+      query._id = { $ne: excludeBookingId };
+    }
+
+    const doc = await BookingModel.findOne(query);
 
     if (!doc) return null;
 
     return new Booking(
-      doc.id,
+      doc._id.toString(),
       doc.userId,
       doc.carId,
       new Date(doc.startTime),
@@ -70,5 +77,13 @@ export class MongoBookingRepository implements IBookingRepository {
 
   async updateStatus(id: string, status: BookingStatus): Promise<void> {
     await BookingModel.findByIdAndUpdate(id, { status });
+  }
+
+  async updateBooking(
+    id: string,
+    startTime: Date,
+    endTime: Date
+  ): Promise<void> {
+    await BookingModel.findByIdAndUpdate(id, { startTime, endTime });
   }
 }

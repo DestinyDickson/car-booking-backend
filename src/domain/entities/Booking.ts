@@ -1,6 +1,7 @@
 export enum BookingStatus {
   PENDING = "PENDING",
   CONFIRMED = "CONFIRMED",
+  DECLINED = "DECLINED",
   CANCELLED = "CANCELLED",
 }
 
@@ -9,8 +10,8 @@ export class Booking {
     public readonly id: string,
     public readonly userId: string,
     public readonly carId: string,
-    public readonly startTime: Date,
-    public readonly endTime: Date,
+    public startTime: Date,
+    public endTime: Date,
     public status: BookingStatus = BookingStatus.PENDING
   ) {
     this.validateBookingDates();

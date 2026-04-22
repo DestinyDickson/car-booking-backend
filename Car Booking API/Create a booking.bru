@@ -6,10 +6,20 @@ meta {
 
 post {
   url: http://localhost:3000/api/bookings
-  body: none
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "userId": "b31a2495-f782-4ad9-bcd8-5844f60d0226",
+    "carId": "69dfef3449282e3548cf0960",
+    "startTime": "2026-05-20T10:00:00.000Z",
+    "endTime": "2026-05-20T11:00:00.000Z"
+  }
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }

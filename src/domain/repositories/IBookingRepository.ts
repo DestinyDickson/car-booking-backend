@@ -7,7 +7,9 @@ export interface IBookingRepository {
   findOverlapping(
     carId: string,
     start: Date,
-    end: Date
+    end: Date,
+    excludeBookingId?: string
   ): Promise<Booking | null>;
   updateStatus(id: string, status: BookingStatus): Promise<void>;
+  updateBooking(id: string, startTime: Date, endTime: Date): Promise<void>;
 }
