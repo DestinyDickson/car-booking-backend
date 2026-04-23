@@ -5,13 +5,20 @@ meta {
 }
 
 patch {
-  url: http://localhost:3000/api/bookings/9a1349ac-720c-415e-b930-47d60d8bbeca/edit
-  body: none
+  url: http://localhost:3000/api/bookings/7cb3ef11-b7e1-48b5-9894-52a8417aaa5d/edit
+  body: json
   auth: inherit
 }
 
 headers {
-  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWRmZWYzNDQ5MjgyZTM1NDhjZjA5NWUiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzc2Mzg1NzUwLCJleHAiOjE3NzYzODkzNTB9.QaVX3cLiBCDvhHHu4anf3v3-iuPrAPk2oh2hDxvCjk8
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWRmZWYzNDQ5MjgyZTM1NDhjZjA5NWUiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzc2ODc2MDQyLCJleHAiOjE3NzY4Nzk2NDJ9.3BwlU9nnzOmol2Dd2IXYhLP9GHUvLkUYYymQ_uHRSOE
+}
+
+body:json {
+  {
+    "startTime": "2026-07-22T14:00:00.000Z",
+    "endTime": "2026-07-22T15:00:00.000Z"
+  }
 }
 
 settings {

@@ -5,6 +5,7 @@ import { ApproveBooking } from "../../application/use-cases/ApproveBooking";
 import { DeclineBooking } from "../../application/use-cases/DeclineBooking";
 import { EditBooking } from "../../application/use-cases/EditBooking";
 import { CreateGuestBooking } from "../../application/use-cases/CreateGuestBooking";
+import { CancelBooking } from "../../application/use-cases/CancelBooking";
 import { MongoBookingRepository } from "../../infrastructure/repositories/MongoBookingRepository";
 import { MongoCarRepository } from "../../infrastructure/repositories/MongoCarRepository";
 import { MongoUserRepository } from "../../infrastructure/repositories/MongoUserRepository";
@@ -21,6 +22,7 @@ const createBooking = new CreateBooking(bookingRepo, carRepo);
 const approveBooking = new ApproveBooking(bookingRepo);
 const declineBooking = new DeclineBooking(bookingRepo);
 const editBooking = new EditBooking(bookingRepo);
+const cancelBooking = new CancelBooking(bookingRepo);
 const createGuestBooking = new CreateGuestBooking(userRepo, createBooking);
 
 const bookingController = new BookingController(
@@ -28,6 +30,7 @@ const bookingController = new BookingController(
   approveBooking,
   declineBooking,
   editBooking,
+  cancelBooking,
   bookingRepo,
   createGuestBooking
 );
@@ -56,5 +59,7 @@ router.patch(
   authorizeRole(UserRole.ADMIN),
   bookingController.edit
 );
+
+router.patch("/:bookingId/cancel", bookingController.cancel);
 
 export default router;

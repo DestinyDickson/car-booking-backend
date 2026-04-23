@@ -4,6 +4,7 @@ import { ApproveBooking } from "../../application/use-cases/ApproveBooking";
 import { DeclineBooking } from "../../application/use-cases/DeclineBooking";
 import { EditBooking } from "../../application/use-cases/EditBooking";
 import { CreateGuestBooking } from "../../application/use-cases/CreateGuestBooking";
+import { CancelBooking } from "../../application/use-cases/CancelBooking";
 import { IBookingRepository } from "../../domain/repositories/IBookingRepository";
 
 export class BookingController {
@@ -12,6 +13,7 @@ export class BookingController {
     private readonly approveBooking: ApproveBooking,
     private readonly declineBooking: DeclineBooking,
     private readonly editBooking: EditBooking,
+    private readonly cancelBooking: CancelBooking,
     private readonly bookingRepo: IBookingRepository,
     private readonly createGuestBooking: CreateGuestBooking
   ) {}
@@ -125,6 +127,22 @@ export class BookingController {
       });
     } catch (error) {
       res.status(500).json({
+        error: error instanceof Error ? error.message : "Unknown error",
+      });
+    }
+  };
+
+  cancel = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const bookingId = String(req.params.bookingId);
+
+      await this.cancelBooking.execute(bookingId);
+
+      res.status(200).json({
+        message: "Booking cancelled successfully",
+      });
+    } catch (error) {
+      res.status(400).json({
         error: error instanceof Error ? error.message : "Unknown error",
       });
     }

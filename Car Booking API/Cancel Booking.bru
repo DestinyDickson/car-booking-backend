@@ -1,0 +1,15 @@
+meta {
+  name: Cancel Booking
+  type: http
+  seq: 11
+}
+
+patch {
+  url: http://localhost:3000/api/bookings/BOOKING_ID/cancel
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
